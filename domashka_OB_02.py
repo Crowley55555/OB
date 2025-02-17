@@ -105,3 +105,4 @@ print(f"Уровень доступа пользователя 4: {admin.find_us
 admin.remove_user(2)
 admin.remove_user(3)
 print(f"Пользователей после удаления: {len(admin.list_users())}")  # 1
+
