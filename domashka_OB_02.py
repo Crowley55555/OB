@@ -43,15 +43,20 @@ class Admin(User):
     def list_users(self):
         return [(user.get_user_id(), user.get_name()) for user in self.__user_list]
 
-# Пример использования
-admin = Admin(1, "Admin User")
-user1 = User(2, "John Doe")
-user2 = User(3, "Jane Smith")
 
+# Создание администратора и пользователей
+admin = Admin(1, "Admin John")
+user1 = User(2, "Alice")
+user2 = User(3, "Bob")
+
+# Администратор добавляет пользователей
 admin.add_user(user1)
 admin.add_user(user2)
+print(f"Пользователей после добавления: {len(admin.list_users())}")  # 2
 
-print(admin.list_users())
+# Администратор удаляет пользователя
+admin.remove_user(user1.get_user_id())
+print(f"Пользователей после удаления: {len(admin.list_users())}")    # 1
 
-admin.remove_user(2)
-print(admin.list_users())
+# Проверка уровня доступа
+print(f"Уровень доступа администратора: {admin.get_access_level()}")  # admin
