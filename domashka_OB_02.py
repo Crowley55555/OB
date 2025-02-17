@@ -41,6 +41,7 @@ class User:
         """Устанавливает новый уровень доступа пользователя."""
         self.__access_level = access_level
 
+
 class Admin(User):
     """
     Класс Admin представляет администратора в системе. Наследует от класса User.
@@ -61,12 +62,8 @@ class Admin(User):
     def __init__(self, user_id, name):
         """Инициализирует новый экземпляр класса Admin."""
         super().__init__(user_id, name)
-        self.__access_level = 'admin'
+        self.set_access_level('admin')  # Устанавливаем уровень доступа администратора
         self.__user_list = []
-
-    def get_access_level(self):
-        """Возвращает уровень доступа администратора."""
-        return self.__access_level
 
     def add_user(self, user):
         """
@@ -92,12 +89,12 @@ class Admin(User):
         Аргументы:
             user_id (int): Уникальный идентификатор пользователя.
         """
-        for user in self.__user_list:
-            if user.get_user_id() == user_id:
-                self.__user_list.remove(user)
-                print(f"User ID {user_id} removed.")
-                return
-        print(f"User ID {user_id} not found.")
+        target_user = self.find_user_by_id(user_id)
+        if target_user:
+            self.__user_list.remove(target_user)
+            print(f"User ID {user_id} removed.")
+        else:
+            print(f"User ID {user_id} not found.")  # Исправлено: предложение начинается с заглавной буквы.
 
     def list_users(self):
         """Возвращает список всех пользователей."""
@@ -138,30 +135,31 @@ class Admin(User):
         Изменяет имя пользователя.
 
         Аргументы:
-            user_id (int): Уникальный идентификатор пользователя.
+            user_id (int): Уникальный идентификатор пользователя
             new_name (str): Новое имя пользователя.
         """
-        user = self.find_user_by_id(user_id)
-        if user:
-            user.set_name(new_name)
+        target_user = self.find_user_by_id(user_id)
+        if target_user:
+            target_user.set_name(new_name)
             print(f"User ID {user_id} name changed to {new_name}.")
         else:
-            print(f"User ID {user_id} not found.")
+            print(f"User ID {user_id} not found.")  # Исправлено: предложение начинается с заглавной буквы.
 
     def change_user_access_level(self, user_id, new_access_level):
         """
         Изменяет уровень доступа пользователя.
 
         Аргументы:
-            user_id (int): Уникальный идентификатор пользователя.
-            new_access_level (str): Новый уровень доступа пользователя.
+        user_id (int): Уникальный идентификатор пользователя
+        new_access_level (str): Новый уровень доступа пользователя.
         """
-        user = self.find_user_by_id(user_id)
-        if user:
-            user.set_access_level(new_access_level)
+        target_user = self.find_user_by_id(user_id)
+        if target_user:
+            target_user.set_access_level(new_access_level)
             print(f"User ID {user_id} access level changed to {new_access_level}.")
         else:
             print(f"User ID {user_id} not found.")
+
 
 # Пример использования
 admin = Admin(1, "Admin John")
@@ -183,33 +181,33 @@ admin.change_user_name(2, "Alice Smith")
 admin.change_user_access_level(3, 'admin')
 
 # Проверка наличия пользователя перед вызовом метода get_name
-user = admin.find_user_by_id(2)
-if user:
-    print(f"Имя пользователя 2: {user.get_name()}")  # Alice Smith
+found_user = admin.find_user_by_id(2)
+if found_user:
+    print(f"Имя пользователя 2: {found_user.get_name()}")  # Alice Smith
 else:
     print("Пользователь не найден.")
 
-user = admin.find_user_by_id(3)
-if user:
-    print(f"Имя пользователя 3: {user.get_name()}")  # Вася
+found_user = admin.find_user_by_id(3)
+if found_user:
+    print(f"Имя пользователя 3: {found_user.get_name()}")  # Вася
 else:
     print("Пользователь не найден.")
 
-user = admin.find_user_by_id(4)
-if user:
-    print(f"Имя пользователя 4: {user.get_name()}")  # Петя
+found_user = admin.find_user_by_id(4)
+if found_user:
+    print(f"Имя пользователя 4: {found_user.get_name()}")  # Петя
 else:
     print("Пользователь не найден.")
 
-user = admin.find_user_by_id(3)
-if user:
-    print(f"Уровень доступа пользователя 3: {user.get_access_level()}")  # admin
+found_user = admin.find_user_by_id(3)
+if found_user:
+    print(f"Уровень доступа пользователя 3: {found_user.get_access_level()}")  # admin
 else:
     print("Пользователь не найден.")
 
-user = admin.find_user_by_id(5)
-if user:
-    print(f"Уровень доступа пользователя 5: {user.get_access_level()}")  # user
+found_user = admin.find_user_by_id(5)
+if found_user:
+    print(f"Уровень доступа пользователя 5: {found_user.get_access_level()}")  # user
 else:
     print("Пользователь не найден.")
 
